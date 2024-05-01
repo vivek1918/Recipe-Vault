@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #f9f9f9;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn-primary {
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 15px auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #f4f4f4;
+        }
+        .table img {
+            width: 80px; /* Set a fixed size for images */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            <h1>Add Recipe</h1>
+            <div class="mb-3">
+              <label for="recipeName" class="form-label">Recipe Name</label>
+              <input name="receipe_name" required type="text" id="recipeName" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label for="recipeDescription"  class="form-label">Recipe Description</label>
+              <textarea name="receipe_description" id="recipeDescription" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="recipeImage" class="form-label">Recipe Image</label>
+                <input name="receipe_image" type="file" id="recipeImage" class="form-control">
+              </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        <!--{{receipes}}-->
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"> # </th>
+                    <th scope="col">Receipe Name</th>
+                    <th scope="col">Receipe Description</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for receipe in receipes %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ receipe.receipe_name }}</td>
+                    <td>{{ receipe.receipe_description }}</td>
+                    <td>
+                        <img src="/media/{{receipe.receipe_image}}"></td>
+                        <td>
+                            <a href="/delete_receipe/{{receipe.id}}/" class="btn btn-danger m-2">Delete</a>
+                            <a href="/update_receipe/{{receipe.id}}/" class="btn btn-success">Update</a>
+                        </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
